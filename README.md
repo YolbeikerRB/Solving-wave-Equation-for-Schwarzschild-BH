@@ -9,6 +9,16 @@ The solution to this wave-like equation is performed within the light-cone coord
 These coordinates are particularly useful for analyzing the disturbance's dynamics. They break down the behavior into two components: 
 $du$, representing inward-moving characteristics, and $dv$, representing outward-moving characteristics. This separation simplifies our analysis and aids in interpreting the disturbance's behavior.
 
+## About the code
+
+The code begins by defining the potential in terms of the $r$ coordinates and subsequently calculates the potential in both the $x-$ and $uv-$coordinates.
+In terms of perturbation, the code initiates with a small Gaussian pulse at $t=0$ and then tracks its evolution over time.
+
+### Output
+
+The code generates a grid with dimensions of $(npoints \times npoints)$, from which a plot depicting the evolution of the perturbation is produced. 
+This plot is presented while holding the radial coordinates fixed at a value of $10 \times rs$.
+
 ## References 
 
 Section III.E of [Konoplya and Zhidenko](https://arxiv.org/abs/1102.4014v2)
