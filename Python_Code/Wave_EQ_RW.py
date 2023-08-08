@@ -1,4 +1,4 @@
-## v1.0:  Solving wave equation to compute wave function that gives the quasinormal modes
+## v1.1:  Solving wave equation to compute wave function that gives the quasinormal modes
 ## Author: Yolbeiker Rodriguez Baez
 
 import numpy as np
@@ -38,6 +38,8 @@ l      = 2.0
 npoint = 2000
 dx     = 0.1
 x_coor = np.array(range(npoint))*dx
+
+##-----     THE GRID IS GIVEN IN (u, v) coordinates
 grid   = np.zeros((npoint, npoint))
 
 #--	Inidial data (perturbation) on the spacetime
@@ -50,23 +52,18 @@ for i in range(1, npoint):
 		grid[i][j] = grid[i][j-1] + grid[i-1][j] - grid[i-1][j-1] - dx**2/8.*RWPotential_uv_cood(dx*(i-1), dx*(j-1), l)*(grid[i][j-1] + grid[i-1][j])
 
 ##-----     PLOT WAVE FUNCTION     -----
-t_list = []
-phi_list = []
-for i in range(0, npoint):
-	for j in range(0, npoint):
-		u = i*dx
-		v = j*dx
-		t = (v+u)/2.
-		rc = (v-u)/2.
-		if rc == 10.0:
-			phi = grid[i][j]
-			t_list.append(t)
-			phi_list.append(np.log(abs(phi)))
-			#plt.plot(t,np.log(abs(phi)),'.', color='blue', markersize=2.5)
-			# print(t)
+time_list = []
+wave_list = []
+for i, u in enumerate(np.arange(0, npoint)*dx):
+    for j, v in enumerate(np.arange(0, npoint)*dx):
+        t  = (v+u)/2.
+        rc = (v-u)/2.
+        if rc == 10.0:
+            time_list.append(t)
+            wave_list.append(np.log(abs(grid[i][j])))
 
-plt.plot(t_list, phi_list, '.', color='blue', markersize=2.5)
-plt.xlabel('$t$', fontsize=18)
+plt.plot(time_list, wave_list, '.', color='C0', ms=2.5)
+plt.xlabel('$time$', fontsize=18)
 plt.ylabel('$\ln |\Psi |$', fontsize=20)
 plt.tight_layout()
 plt.show()
