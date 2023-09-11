@@ -1,4 +1,4 @@
-## v1.1:  Solving wave equation to compute wave function that gives the quasinormal modes
+## v1.2:  Solving wave-like equation to compute wave function that gives the quasinormal modes
 ## Author: Yolbeiker Rodriguez Baez
 
 import numpy as np
@@ -7,9 +7,11 @@ from scipy.special import lambertw
 
 ##-----     DEFINING FUNCTIONS     -----
 def rt_coor(r):
+    # Give the tortoise coordinates (rt) from the radial coordinates (r)
     return r + np.log(r-1)
 
 def r_coor(rt):
+    # Give the radial coordinates (r) from the tortoise coordinates (rt)
     nexp  = np.exp(rt - 1)
     return np.real(1 + lambertw(nexp))
 
@@ -31,6 +33,7 @@ def RWPotential_uv_cood(u, v, l):
     return RWPotential_rt_cood(r_t, l)
 
 def Gaussian_func(grid):
+    # Initial data (perturbation) on the spacetime
     return np.exp(-(grid-10.)**2/18.)
 
 ##-----     DEFINING DATA and GRID     -----
@@ -39,14 +42,14 @@ npoint = 2000
 dx     = 0.1
 x_coor = np.array(range(npoint))*dx
 
-##-----     THE GRID IS GIVEN IN (u, v) coordinates
+##----- Initializing the grid in (u,v) coordinates -----
 grid   = np.zeros((npoint, npoint))
 
 #--	Inidial data (perturbation) on the spacetime
 grid[0]   = Gaussian_func(x_coor)
 grid.T[0] = np.ones(npoint)*grid[0][0]
 
-##-----     EVOLUTION     -----
+##-----    SOLVING WAVE EQUATION     -----
 for i in range(1, npoint):
 	for j in range(1, npoint):
 		grid[i][j] = grid[i][j-1] + grid[i-1][j] - grid[i-1][j-1] - dx**2/8.*RWPotential_uv_cood(dx*(i-1), dx*(j-1), l)*(grid[i][j-1] + grid[i-1][j])
